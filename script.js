@@ -15,8 +15,13 @@ function fetchCityData(city) {
 
 function fetchCityWeather() {
     fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + key)
-    
+    .then(function(data) {
+        //create elements
+        //modify elements
+        //append to DOM
+    })
 }
+
 
 document.querySelector('button').addEventListener("click", function(e) {
     let cityValue = cityEl.value
@@ -27,9 +32,6 @@ document.querySelector('button').addEventListener("click", function(e) {
 
 
 
-// fetch(`https://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=5589fef8dc103aa57522ba5e43e43ac8`)
-//     .then(function(response) {
-//         console.log(response)
-//     })
-
-// form.addEventListener('submit', searchWeather)
+//set cityEl to localStorage
+//get item from localStorage
+    //append to pastSearches
