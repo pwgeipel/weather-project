@@ -7,10 +7,12 @@ let cityEl = document.getElementById("city");
 
 function fetchCityData(city) {
     fetch('https://api.openweather.org/data/2.5/weather?q=' + city + '&units=imperial&appid=' + key)
-    .then((response) => response.json())
-    .then((data) => console.log(data));
-    lon = data.coord.lon;
-    lat = data.coord.lat
+    .then((response) => console.log(response))
+//     .then((data) => {
+//         console.log(data);
+//         lon = data.coord.lon;
+//         lat = data.coord.lat
+// })        
 }
 
 function fetchCityWeather() {
