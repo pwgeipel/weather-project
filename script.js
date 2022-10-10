@@ -13,13 +13,17 @@ function fetchCityData(city) {
     lat = data.coord.lat
 }
 
+function fetchCityWeather() {
+    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + key)
+    
+}
 
-document.querySelector('button').addEventListener("click", function(e)) {
+document.querySelector('button').addEventListener("click", function(e) {
     let cityValue = cityEl.value
     e.preventDefault();
 
     fetchCityData(cityValue);
-}
+})
 
 
 
@@ -28,4 +32,4 @@ document.querySelector('button').addEventListener("click", function(e)) {
 //         console.log(response)
 //     })
 
-form.addEventListener('submit', searchWeather)
+// form.addEventListener('submit', searchWeather)
