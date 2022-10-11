@@ -23,19 +23,21 @@ function searchCity(event) {
         lon = data.coord.lon
         console.log(data)
     
-    // fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + key)
-    // .then(function(response) {
-    //     console.log(response)
-    //     })
-    // })
-// })        
-    // })
+    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + key)
+    .then(function(response) {
+        return response.json()
+        })
+    .then(function(weather) {
+        console.log(weather)
+    }) 
+    })
+        
     
     
+    
 
 
-})
-
+}
 
 
 // function fetchCityWeather() {
