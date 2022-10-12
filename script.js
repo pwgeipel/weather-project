@@ -10,7 +10,7 @@ function searchCity(event) {
     event.preventDefault()
     var cityName = cityInput.value
 
-    fetch('https://api.openweathermap.org/data/2.5/weather?q=' + cityName + '&units=imperial&appid=' + key)
+    fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + cityName + '&units=imperial&appid=' + key)
     .then(function(response) {
         if (response.status === 200) {
             return response.json()           
@@ -23,7 +23,7 @@ function searchCity(event) {
         lon = data.coord.lon
         console.log(data)
     
-    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + key)
+    fetch('https://api.openweathermap.org/data/2.5/forecast/?lat=' + lat + '&lon=' + lon + '&units=imperial&cnt=5&appid=' + key)
     .then(function(response) {
         return response.json()
         })
