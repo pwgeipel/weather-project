@@ -17,13 +17,18 @@ function removeCards() {
     })
 };
 
+function resetInput() {
+    cityInput.value = '';
+    cityInput.setAttribute('placeholder', "Enter a location")
+}
 
 function searchCity(event) {
     event.preventDefault()
     var cityName = cityInput.value.trim();
-    
-    
-
+    removeCards();
+    resetInput();
+}    
+function fetchCityData(cityName) {
     fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + cityName + '&units=imperial&appid=' + key)
     .then(function(response) {
         if (response.status === 200) {
@@ -38,33 +43,41 @@ function searchCity(event) {
         lon = data.coord.lon
         console.log(data)
 
-        var h2 = document.createElement('h2')
-        var img = document.createElement('img')
+        fetchCityLocation(lon, lat);
+        return cityData;
+
+        // var h2 = document.createElement('h2')
+        // var img = document.createElement('img')
         
-        h2.textContent = data.name  
-        img.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-        currentEL.append(h2)
-        currentEL.append(img)
-    
+        // h2.textContent = data.name  
+        // img.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
+        // currentEL.append(h2)
+        // currentEL.append(img)
+})
+}
+function fetchCityLocation(lat, lon) {
     fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&cnt=5&appid=' + key)
     .then(function(response) {
         return response.json()
         })
     .then(function(weather) {
-        console.log(weather)
-        // var h2 = document.createElement('h2')
-        // var img = document.createElement('img')
-        // //modify elements
+        if (response.status === 200) {
+            forecastData = data;
+            createCard(forecastData);
+        } else {
+            // errormessage
+        }
+        
         
     }) 
-    })
-        
+    
+}        
     
     
     
 
 
-}
+
 
 
 
