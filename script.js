@@ -10,10 +10,19 @@ var currentEL = document.getElementById('current');
 var forecastEl = document.getElementById('forecast');
 // let cityEl = document.getElementById("city");
 
+function removeCards() {
+    const weatherCards = document.querySelectorAll('.card');
+    weatherCards.forEach((card) => {
+        card.remove();
+    })
+};
+
 
 function searchCity(event) {
     event.preventDefault()
-    var cityName = cityInput.value
+    var cityName = cityInput.value.trim();
+    
+    
 
     fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + cityName + '&units=imperial&appid=' + key)
     .then(function(response) {
@@ -28,6 +37,7 @@ function searchCity(event) {
         lat = data.coord.lat
         lon = data.coord.lon
         console.log(data)
+
         var h2 = document.createElement('h2')
         var img = document.createElement('img')
         
@@ -57,14 +67,7 @@ function searchCity(event) {
 }
 
 
-// function fetchCityWeather() {
-//     fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + key)
-//     .then(function(data) {
-//         //create elements
-//         //modify elements
-//         //append to DOM
-//     })
-// }
+
 
 form.addEventListener('submit', searchCity)
 
