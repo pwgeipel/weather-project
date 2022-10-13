@@ -2,8 +2,12 @@ var form = document.querySelector('form')
 var cityInput = document.getElementById('city')
 let lat;
 let lon;
+let temp;
+let cityData;
+let forecastData;
 const key = "5589fef8dc103aa57522ba5e43e43ac8";
 var currentEL = document.getElementById('current');
+var forecastEl = document.getElementById('forecast');
 // let cityEl = document.getElementById("city");
 
 
