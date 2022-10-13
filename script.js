@@ -1,5 +1,5 @@
-var form = document.querySelector('form')
-var cityInput = document.getElementById('city')
+// var form = document.querySelector('form')
+var cityInput = document.getElementById('cityInput')
 let lat;
 let lon;
 let temp;
@@ -22,23 +22,18 @@ function resetInput() {
     cityInput.setAttribute('placeholder', "Enter a location");
 }
 
-function searchCity(event) {
-    event.preventDefault()
-    var cityName = cityInput.value.trim();
-    removeCards();
-    resetInput();
-    fetchCityData(cityName);
-}    
-function fetchCityData(cityName) {
-    fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + cityName + '&units=imperial&appid=' + key)
+// function searchCity(event) {
+//     event.preventDefault()
+//     var cityName = cityInput.value.trim();
+//     removeCards();
+//     resetInput();
+//     fetchCityData(cityName);
+// }    
+function fetchCityData(city) {
+    fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + city + '&units=imperial&appid=' + key)
     .then(function(response) {
-        if (response.status === 200) {
-            return response.json()
-            //set to localstorage           
-        } else if (response.status === 404) {
-
-        }
-    })
+        return response.json()
+        
     .then(function(data) {
         cityData = data;
         lat = cityData.coord.lat
@@ -46,7 +41,16 @@ function fetchCityData(cityName) {
         
         createCityCard(cityData);
         fetchCityLocation(lon, lat);
-        return cityData;
+        return cityData;    
+        
+        // if (response.status === 200) {
+            
+        //     //set to localstorage           
+        // } else if (response.status === 404) {
+
+        // }
+    })
+    
 
 })
 
@@ -55,7 +59,7 @@ function fetchCityLocation(lat, lon) {
     .then(function(response) {
         return response.json()
         })
-    .then(function(weather) {
+    .then(function(data) {
         if (response.status === 200) {
             forecastData = data;
             createCard(forecastData);
@@ -93,7 +97,7 @@ function createCityCard(cityData) {
 };    
     
 function createCard(forecastData) {
-    for (var i = 5; i < forecastData.list.length; i+=8) {
+    for (var i = 5; i < forecastData.list.length; i+= 8) {
         const forecastCard = document.createElement('div');
         forecastCard.classList.add('card', 'text-center', 'px-3');
 
@@ -116,15 +120,22 @@ function createCard(forecastData) {
         forecastEl.appendChild(forecastCard);
 
     }
-}
+};
+
+document.querySelector('button').addEventListener('click', function(event) {
+    event.preventDefault();
+    cityName = cityInput.value.trim();
+    removeCards();
+    resetInput();
+    fetchCityData(cityName);
+    
+});
 
 
 
 
-
-
-form.addEventListener('submit', searchCity)
-
+// form.addEventListener('submit', searchCity)
+    
 
 
 }
