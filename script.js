@@ -27,6 +27,7 @@ function searchCity(event) {
     var cityName = cityInput.value.trim();
     removeCards();
     resetInput();
+    fetchCityData(cityName);
 }    
 function fetchCityData(cityName) {
     fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + cityName + '&units=imperial&appid=' + key)
@@ -39,22 +40,16 @@ function fetchCityData(cityName) {
         }
     })
     .then(function(data) {
-        lat = data.coord.lat
-        lon = data.coord.lon
         cityData = data;
-
+        lat = cityData.coord.lat
+        lon = cityData.coord.lon
+        
+        createCityCard(cityData);
         fetchCityLocation(lon, lat);
         return cityData;
 
-        // var h2 = document.createElement('h2')
-        // var img = document.createElement('img')
-        
-        // h2.textContent = data.name  
-        // img.src = `http://openweathermap.org/img/w/${data.weather[0].icon}.png`;
-        // currentEL.append(h2)
-        // currentEL.append(img)
 })
-}
+
 function fetchCityLocation(lat, lon) {
     fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&cnt=5&appid=' + key)
     .then(function(response) {
@@ -132,6 +127,4 @@ form.addEventListener('submit', searchCity)
 
 
 
-//set cityEl to localStorage
-//get item from localStorage
-    // append to pastSearches
+}
