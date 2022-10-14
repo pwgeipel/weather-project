@@ -6,7 +6,7 @@ let temp;
 let cityData;
 let forecastData;
 const key = "5589fef8dc103aa57522ba5e43e43ac8";
-var currentEL = document.getElementById('current');
+var currentEl = document.getElementById('current');
 var forecastEl = document.getElementById('forecast');
 // let cityEl = document.getElementById("city");
 
@@ -33,7 +33,7 @@ function fetchCityData(city) {
     fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + city + '&units=imperial&appid=' + key)
     .then(function(response) {
         return response.json()
-        
+    })
     .then(function(data) {
         cityData = data;
         lat = cityData.coord.lat
@@ -52,15 +52,15 @@ function fetchCityData(city) {
     })
     
 
-})
+}
 
 function fetchCityLocation(lat, lon) {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&cnt=5&appid=' + key)
+    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + key)
     .then(function(response) {
         return response.json()
         })
     .then(function(data) {
-        if (response.status === 200) {
+        if (data.cod == 200) {
             forecastData = data;
             createCard(forecastData);
         } else {
@@ -138,4 +138,3 @@ document.querySelector('button').addEventListener('click', function(event) {
     
 
 
-}
