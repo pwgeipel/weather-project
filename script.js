@@ -36,13 +36,13 @@ function fetchCityData(city) {
     })
     .then(function(data) {
         cityData = data;
+        // console.log(cityData);
         lat = cityData.coord.lat
         lon = cityData.coord.lon
-        
         createCityCard(cityData);
         fetchCityLocation(lon, lat);
         return cityData;    
-        
+      
         // if (response.status === 200) {
             
         //     //set to localstorage           
@@ -55,7 +55,7 @@ function fetchCityData(city) {
 }
 
 function fetchCityLocation(lat, lon) {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&units=imperial&appid=' + key)
+    fetch('https://api.openweathermap.org/data/2.5/forecast?units=imperial&&lat=' + lat + '&lon=' + lon + '&appid=' + key)
     .then(function(response) {
         return response.json()
         })
@@ -63,6 +63,7 @@ function fetchCityLocation(lat, lon) {
         if (data.cod == 200) {
             forecastData = data;
             createCard(forecastData);
+            console.log(forecastData)
         } else {
             // errormessage
         }        
@@ -77,7 +78,7 @@ function createCityCard(cityData) {
     currentName.innerText = cityData.name;
 
     let currentDate = document.createElement('h4');
-    currentDate.innerText = moment.unix(cityData.dt).format('dddd, MMMM DD, YYYY');
+    currentDate.innerText = moment.unix(cityData.dt).format('dddd, MMMM DD');
 
     let currentTemp = document.createElement('h4');
     currentTemp.innerText = cityData.main.temp + '° F';
@@ -102,7 +103,7 @@ function createCard(forecastData) {
         forecastCard.classList.add('card', 'text-center', 'px-3');
 
         const forecastDate = document.createElement('h5');
-        forecastDate.innerText = moment.unix(forecastData.list[i].dt).format('dddd, MMMMM DD');
+        forecastDate.innerText = moment.unix(forecastData.list[i].dt).format('dddd, MMMM DD');
 
         const forecastTemp = document.createElement('p');
         forecastTemp.innerText = forecastData.list[i].main.temp + '° F';
@@ -111,7 +112,7 @@ function createCard(forecastData) {
         forecastWind.innerText = 'Wind Speed: ' + forecastData.list[i].wind.speed + ' mph';
 
         const forecastHumidity = document.createElement('p');
-        forecastHumidity.innerText = 'Humidty: ' + forecastData.list[i].main.humidty + '%';
+        forecastHumidity.innerText = 'Humidty: ' + forecastData.list[i].main.humidity + '%';
 
         forecastCard.appendChild(forecastDate);
         forecastCard.appendChild(forecastTemp);
