@@ -5,6 +5,8 @@ let lon;
 let temp;
 let cityData;
 let forecastData;
+let cityArray = [];
+
 const key = "5589fef8dc103aa57522ba5e43e43ac8";
 var currentEl = document.getElementById('current');
 var forecastEl = document.getElementById('forecast');
@@ -22,13 +24,19 @@ function resetInput() {
     cityInput.setAttribute('placeholder', "Enter a location");
 }
 
-// function searchCity(event) {
-//     event.preventDefault()
-//     var cityName = cityInput.value.trim();
-//     removeCards();
-//     resetInput();
-//     fetchCityData(cityName);
-// }    
+function setLocalStorage(city, cityArray) {
+    if (city != null) {
+        cityArray.includes(city) ? null : cityArray.push(city);
+    }
+    localStorage.setItem('city', JSON.stringify(cityArray));
+}
+
+function fetchLocalHistory() {
+    cityArray = localStorage.getItem('city');
+    cityArray = cityArray ? JSON.parse(cityArray) : [];
+    return cityArray;
+}
+
 function fetchCityData(city) {
     fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + city + '&units=imperial&appid=' + key)
     .then(function(response) {
@@ -129,7 +137,7 @@ document.querySelector('button').addEventListener('click', function(event) {
     removeCards();
     resetInput();
     fetchCityData(cityName);
-    
+    setLocalStorage(city, cityArray)
 });
 
 
