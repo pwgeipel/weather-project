@@ -10,6 +10,7 @@ let cityArray = [];
 const key = "5589fef8dc103aa57522ba5e43e43ac8";
 var currentEl = document.getElementById('current');
 var forecastEl = document.getElementById('forecast');
+const buttonDiv = document.getElementById('pastSearches');
 // let cityEl = document.getElementById("city");
 
 function removeCards() {
@@ -29,14 +30,23 @@ function setLocalStorage(city, cityArray) {
         cityArray.includes(city) ? null : cityArray.push(city);
     }
     localStorage.setItem('city', JSON.stringify(cityArray));
+    console.log(city)
 }
 
 function fetchLocalHistory() {
     cityArray = localStorage.getItem('city');
     cityArray = cityArray ? JSON.parse(cityArray) : [];
-    return cityArray;
-}
+    // return cityArray;
 
+    for (i = 0; i < cityArray.length; i++) {
+        var create = $("<button>")
+        create.attr("class", "btn btn-outline-secondary")
+        create.attr("type", "button")
+        create.text(cityArray[i])
+        buttonDiv.prepend(create[0])
+        console.log(create);
+}
+}
 function fetchCityData(city) {
     fetch('https://api.openweathermap.org/data/2.5/weather/?q=' + city + '&units=imperial&appid=' + key)
     .then(function(response) {
@@ -44,26 +54,30 @@ function fetchCityData(city) {
     })
     .then(function(data) {
         cityData = data;
-        // console.log(cityData);
+        
         lat = cityData.coord.lat
         lon = cityData.coord.lon
         createCityCard(cityData);
         fetchCityLocation(lon, lat);
         return cityData;    
       
-        // if (response.status === 200) {
-            
-        //     //set to localstorage           
-        // } else if (response.status === 404) {
-
-        // }
+        
     })
     
 
 }
 
+function displayErrorMessage() {
+    const errorCard = document.createElement('div');
+    errorCard.classList.add('card', 'text-center', 'py-4');
+    const errorMessage = document.createElement('h5');
+    errorMessage.innerText = "Please try again.";
+    errorCard.appendChild(errorMessage);
+    currentEl.appendChild(errorCard);
+};
+
 function fetchCityLocation(lat, lon) {
-    fetch('https://api.openweathermap.org/data/2.5/forecast?units=imperial&&lat=' + lat + '&lon=' + lon + '&appid=' + key)
+    fetch('https://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&appid=' + key + '&units=imperial')
     .then(function(response) {
         return response.json()
         })
@@ -71,9 +85,9 @@ function fetchCityLocation(lat, lon) {
         if (data.cod == 200) {
             forecastData = data;
             createCard(forecastData);
-            console.log(forecastData)
+            console.log(forecastData);
         } else {
-            // errormessage
+            displayErrorMessage();
         }        
     })     
 }        
@@ -114,7 +128,7 @@ function createCard(forecastData) {
         forecastDate.innerText = moment.unix(forecastData.list[i].dt).format('dddd, MMMM DD');
 
         const forecastTemp = document.createElement('p');
-        forecastTemp.innerText = forecastData.list[i].main.temp + '° F';
+        forecastTemp.innerText = (forecastData.list[i].main.temp + 100) + '° F';
 
         const forecastWind = document.createElement('p');
         forecastWind.innerText = 'Wind Speed: ' + forecastData.list[i].wind.speed + ' mph';
@@ -137,13 +151,6 @@ document.querySelector('button').addEventListener('click', function(event) {
     removeCards();
     resetInput();
     fetchCityData(cityName);
-    setLocalStorage(city, cityArray)
+    setLocalStorage(cityName, cityArray);
+    fetchLocalHistory()
 });
-
-
-
-
-// form.addEventListener('submit', searchCity)
-    
-
-
